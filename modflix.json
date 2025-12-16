@@ -190,5 +190,9 @@
   "MovieTP": {
     "name": "movietp",
     "url": "https://myflixbd.to"
+  },
+  "stream": {
+    "name": "stream",
+    "url": "https://www.vegamovieshd.co.in"
   }
 }
