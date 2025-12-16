@@ -186,5 +186,9 @@
   "1cinevood": {
     "name": "cinewood",
     "url": "https://1cinevood.fyi"
+  },
+  "MovieTP": {
+    "name": "movietp",
+    "url": "https://myflixbd.to"
   }
 }
