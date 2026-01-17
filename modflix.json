@@ -214,5 +214,9 @@
   "bolly4u": {
     "name": "bolly4u",
     "url": "https://allmovieshub.repair"
+  },
+  "bollyflix": {
+    "name": "bollyflix",
+    "url": "https://bollyflix.do"
   }
 }
