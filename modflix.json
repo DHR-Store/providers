@@ -194,5 +194,9 @@
   "cinema": {
     "name": "cinema",
     "url": "https://vegamovieshub.cfd"
+  },
+  "7starhd": {
+    "name": "7starhd",
+    "url": "https://7starhd.build"
   }
 }
