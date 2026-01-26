@@ -242,5 +242,9 @@
   "anihub": {
     "name": "anihub",
     "url": "https://anihub.in"
+  },
+  "9anime": {
+    "name": "9anime",
+    "url": "https://9animetv.to"
   }
 }
