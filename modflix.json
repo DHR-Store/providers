@@ -266,5 +266,9 @@
   "tamilian": {
     "name": "tamilian",
     "url": "https://tamilian.io"
+  },
+  "movietp": {
+    "name": "movietp",
+    "url": "https://myflixbd.to"
   }
 }
