@@ -250,5 +250,9 @@
   "ssrmovies": {
     "name": "ssrmovies",
     "url": "https://ssrmovies.free"
+  },
+  "woodclub": {
+    "name": "woodclub",
+    "url": "https://movieswood.club"
   }
 }
