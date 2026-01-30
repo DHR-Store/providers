@@ -262,5 +262,9 @@
   "filmycab": {
     "name": "filmycab",
     "url": "https://filmycab.fyi"
+  },
+  "tamilian": {
+    "name": "tamilian",
+    "url": "https://tamilian.io"
   }
 }
