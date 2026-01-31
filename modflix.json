@@ -282,5 +282,9 @@
   "ehubm": {
     "name": "ehubm",
     "url": "https://extramovies.miami"
+  },
+  "mkvhub": {
+    "name": "mkvhub",
+    "url": "https://www.mkvhub.store"
   }
 }
