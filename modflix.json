@@ -286,5 +286,9 @@
   "mkvhub": {
     "name": "mkvhub",
     "url": "https://www.mkvhub.store"
+  },
+  "hdmovie2": {
+    "name": "hdmovie2",
+    "url": "https://hdmovie2.productions"
   }
 }
