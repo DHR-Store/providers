@@ -318,5 +318,9 @@
   "hindim": {
     "name": "hindim",
     "url": "https://hindmoviez.cafe"
+  },
+  "xdmovies": {
+    "name": "xdmovies",
+    "url": "https://new.xdmovies.wtf"
   }
 }
