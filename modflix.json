@@ -334,5 +334,9 @@
   "ola": {
     "name": "ola",
     "url": "https://v2.olamovies.mov"
+  },
+  "w4f": {
+    "name": "w4f",
+    "url": "https://worldfree4u.dev"
   }
 }
