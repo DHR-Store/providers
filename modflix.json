@@ -342,5 +342,9 @@
   "hiAnime": {
     "name": "hiAnime",
     "url": "https://hianime.mx"
+  },
+  "cinemalux": {
+    "name": "cinemalux",
+    "url": "https://cinemalux.fit"
   }
 }
