@@ -346,5 +346,9 @@
   "cinemalux": {
     "name": "cinemalux",
     "url": "https://cinemalux.fit"
+  },
+  "moviewap": {
+    "name": "moviewap",
+    "url": "https://www.moviezwap.llc"
   }
 }
