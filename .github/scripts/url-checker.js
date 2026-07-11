@@ -4,6 +4,17 @@ const axios = require('axios');
 const FILE_PATH = 'modflix.json';
 const updatedProviders = []; // Track updated providers for Discord notification
 
+const DEFAULT_HEADERS = {
+  'User-Agent':
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36',
+  Accept:
+    'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+  'Accept-Language': 'en-US,en;q=0.9',
+  'Accept-Encoding': 'gzip, deflate, br',
+  Connection: 'keep-alive',
+  'Upgrade-Insecure-Requests': '1'
+};
+
 // Read the modflix.json file
 function readModflixJson() {
   try {
@@ -31,106 +42,118 @@ function hasTrailingSlash(url) {
   return url.endsWith('/') && !url.endsWith('://');
 }
 
-// Check URL and return new URL if domain redirected
+function getFinalUrl(response, originalUrl) {
+  return (
+    response?.request?.res?.responseUrl ||
+    response?.request?._redirectable?._currentUrl ||
+    response?.config?.url ||
+    originalUrl
+  );
+}
+
+function normalizeOrigin(url) {
+  try {
+    return new URL(url).origin;
+  } catch {
+    return url;
+  }
+}
+
+async function requestUrl(method, url) {
+  return axios({
+    method,
+    url,
+    maxRedirects: 5,
+    timeout: 10000,
+    validateStatus: status => true,
+    headers: DEFAULT_HEADERS
+  });
+}
+
+function logVerboseResult(url, response, finalUrl) {
+  const status = response?.status ?? 'unknown';
+  const locationHeader = response?.headers?.location;
+  console.log(
+    `ℹ️ ${url} -> status=${status} final=${finalUrl}` +
+      (locationHeader ? ` location=${locationHeader}` : '')
+  );
+}
+
+function shouldUpdateFromFinalUrl(originalUrl, finalUrl) {
+  const originalDomain = getDomain(originalUrl);
+  const finalDomain = getDomain(finalUrl);
+  return finalDomain && finalDomain !== originalDomain;
+}
+
+// Check URL and return new URL if domain redirected or resolved elsewhere
 async function checkUrl(url) {
   try {
-    // Set timeout to 10 seconds to avoid hanging
-    const response = await axios.head(url, {
-      maxRedirects: 0,
-      timeout: 10000,
-      validateStatus: status => true
-    });
-    
-    // If status is 200, no change needed
+    const response = await requestUrl('get', url);
+    const finalUrl = getFinalUrl(response, url);
+    logVerboseResult(url, response, finalUrl);
+
+    if (shouldUpdateFromFinalUrl(url, finalUrl)) {
+      const updatedUrl = normalizeOrigin(finalUrl) + (hasTrailingSlash(url) ? '/' : '');
+      console.log(`🔄 ${url} resolved to ${finalUrl}`);
+      console.log(`Will update to: ${updatedUrl} (preserved trailing slash: ${hasTrailingSlash(url)})`);
+      return updatedUrl;
+    }
+
     if (response.status === 200) {
       console.log(`✅ ${url} is valid (200 OK)`);
       return null;
-    } else if (response.status >= 300 && response.status < 400) {
-      // Handle redirects
+    }
+
+    if (response.status >= 300 && response.status < 400) {
       const newLocation = response.headers.location;
       if (newLocation) {
-        // If it's a relative redirect, construct the full URL
         let fullRedirectUrl = newLocation;
         if (!newLocation.startsWith('http')) {
           const baseUrl = new URL(url);
           fullRedirectUrl = new URL(newLocation, baseUrl.origin).toString();
         }
-        
-        console.log(`🔄 ${url} redirects to ${fullRedirectUrl}`);
-        
-        // Get the new domain
-        const newDomain = getDomain(fullRedirectUrl);
-        
-        // Check if original URL had a trailing slash
-        const needsTrailingSlash = hasTrailingSlash(url);
-        
-        // Create new URL: new domain + trailing slash if the original had one
-        let finalUrl = newDomain;
-        if (needsTrailingSlash) {
-          finalUrl += '/';
-        }
-        
-        console.log(`Will update to: ${finalUrl} (preserved trailing slash: ${needsTrailingSlash})`);
-        return finalUrl;
-      }
-    } else {
-      console.log(`⚠️ ${url} returned status ${response.status}`);
-    }
-  } catch (error) {
-    // Try GET request if HEAD fails
-    try {
-      const response = await axios.get(url, {
-        maxRedirects: 0,
-        timeout: 10000,
-        validateStatus: status => true
-      });
-      
-      if (response.status === 200) {
-        console.log(`✅ ${url} is valid (200 OK)`);
-        return null;
-      } else if (response.status >= 300 && response.status < 400) {
-        // Handle redirects
-        const newLocation = response.headers.location;
-        if (newLocation) {
-          console.log(`🔄 ${url} redirects to ${newLocation}`);
-          
-          let fullRedirectUrl = newLocation;
-          if (!newLocation.startsWith('http')) {
-            const baseUrl = new URL(url);
-            fullRedirectUrl = new URL(newLocation, baseUrl.origin).toString();
-          }
-          
-          // Get the new domain
-          const newDomain = getDomain(fullRedirectUrl);
-          
-          // Check if original URL had a trailing slash
+
+        if (shouldUpdateFromFinalUrl(url, fullRedirectUrl)) {
+          const newDomain = normalizeOrigin(fullRedirectUrl);
           const needsTrailingSlash = hasTrailingSlash(url);
-          
-          // Create new URL: new domain + trailing slash if the original had one
-          let finalUrl = newDomain;
-          if (needsTrailingSlash) {
-            finalUrl += '/';
-          }
-          
-          console.log(`Will update to: ${finalUrl} (preserved trailing slash: ${needsTrailingSlash})`);
-          return finalUrl;
+          const finalUrlForUpdate = newDomain + (needsTrailingSlash ? '/' : '');
+          console.log(`🔄 ${url} redirects to ${fullRedirectUrl}`);
+          console.log(
+            `Will update to: ${finalUrlForUpdate} (preserved trailing slash: ${needsTrailingSlash})`
+          );
+          return finalUrlForUpdate;
         }
-      } else {
-        console.log(`⚠️ ${url} returned status ${response.status}`);
       }
-    } catch (getError) {
-      if (getError.response) {
-        console.log(`⚠️ ${url} returned status ${getError.response.status}`);
-      } else if (getError.code === 'ECONNABORTED') {
-        console.log(`⌛ ${url} request timed out`);
-      } else if (getError.code === 'ENOTFOUND') {
-        console.log(`❌ ${url} domain not found`);
-      } else {
-        console.log(`❌ Error checking ${url}: ${getError.message}`);
+    }
+
+    console.log(`⚠️ ${url} returned status ${response.status}`);
+  } catch (error) {
+    if (error.response) {
+      const finalUrl = getFinalUrl(error.response, url);
+      logVerboseResult(url, error.response, finalUrl);
+
+      // If the request resolves to a different origin even with a non-2xx status,
+      // use that as an update signal. This keeps existing behavior intact while
+      // allowing sites that block HEAD/GET with 403 but still resolve elsewhere.
+      if (shouldUpdateFromFinalUrl(url, finalUrl)) {
+        const updatedUrl = normalizeOrigin(finalUrl) + (hasTrailingSlash(url) ? '/' : '');
+        console.log(`🔄 ${url} resolved to ${finalUrl}`);
+        console.log(
+          `Will update to: ${updatedUrl} (preserved trailing slash: ${hasTrailingSlash(url)})`
+        );
+        return updatedUrl;
       }
+
+      console.log(`⚠️ ${url} returned status ${error.response.status}`);
+    } else if (error.code === 'ECONNABORTED') {
+      console.log(`⌛ ${url} request timed out`);
+    } else if (error.code === 'ENOTFOUND') {
+      console.log(`❌ ${url} domain not found`);
+    } else {
+      console.log(`❌ Error checking ${url}: ${error.message}`);
     }
   }
-  
+
   // Return null if no change or error
   return null;
 }
@@ -139,23 +162,23 @@ async function checkUrl(url) {
 async function main() {
   const providers = readModflixJson();
   let hasChanges = false;
-  
+
   // Process each provider
   for (const [key, provider] of Object.entries(providers)) {
     const url = provider.url;
     console.log(`Checking ${provider.name} (${url})...`);
-    
+
     try {
       const newUrl = await checkUrl(url);
       if (newUrl && newUrl !== url) {
         // Store the old URL before updating
         const oldUrl = provider.url;
-        
+
         // Update the provider URL
         provider.url = newUrl;
         hasChanges = true;
         console.log(`Updated ${provider.name} URL from ${oldUrl} to ${newUrl}`);
-        
+
         // Track updated provider for Discord notification
         updatedProviders.push({
           name: provider.name,
@@ -167,14 +190,14 @@ async function main() {
       console.log(`❌ Error processing ${url}: ${error.message}`);
     }
   }
-  
+
   // Write changes back to file if needed
   if (hasChanges) {
     // Use a space-efficient JSON format but with proper formatting
     const jsonString = JSON.stringify(providers, null, 2);
     fs.writeFileSync(FILE_PATH, jsonString);
     console.log(`✅ Updated ${FILE_PATH} with new URLs`);
-    
+
     // Output updated providers for Discord notification in a clean format
     if (updatedProviders.length > 0) {
       console.log("\n### UPDATED_PROVIDERS_START ###");
