@@ -145,7 +145,7 @@
   },
   "moviezwap": {
     "name": "moviezwap",
-    "url": "https://www.moviezwap.llc/"
+    "url": "https://www.moviezwap.land/"
   },
   "9xflix": {
     "name": "9xflix",
@@ -245,7 +245,7 @@
   },
   "9anime": {
     "name": "9anime",
-    "url": "https://9animetv.to"
+    "url": "https://9anime.org.lv"
   },
   "ssrmovies": {
     "name": "ssrmovies",
@@ -349,7 +349,7 @@
   },
   "moviewap": {
     "name": "moviewap",
-    "url": "https://www.moviezwap.llc"
+    "url": "https://www.moviezwap.land"
   },
   "animehdub": {
     "name": "animehindidub",
@@ -358,9 +358,5 @@
   "aniwave": {
     "name": "aniwave",
     "url": "https://aniwaves.ru"
-  },
-  "9anime": {
-    "name": "9anime",
-    "url": "https://9anime.org.lv"
   }
 }
