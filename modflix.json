@@ -390,5 +390,9 @@
   "mkvpoint": {
     "name": "mkvpoint",
     "url": "https://www.mkvmoviespoint.uno"
+  },
+  "gokuhd": {
+    "name": "gokuhd",
+    "url": "https://gokuhd.com"
   }
 }
