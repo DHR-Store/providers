@@ -398,5 +398,9 @@
   "aheaven": {
     "name": "animeheaven",
     "url": "https://animeheaven.com.co"
+  },
+  "prmovie": {
+    "name": "prmovie",
+    "url": "https://prmovies.locker"
   }
 }
