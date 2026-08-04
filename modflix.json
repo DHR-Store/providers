@@ -414,5 +414,9 @@
   "animevilla": {
     "name": "animevilla",
     "url": "https://animevilla.org"
+  },
+  "kaa": {
+    "name": "kaa",
+    "url": "https://kaa.lt"
   }
 }
