@@ -422,5 +422,9 @@
   "pvrplay": {
     "name": "pvrplay",
     "url": "https://pvrplay.online"
+  },
+  "anidb": {
+    "name": "anidb",
+    "url": "https://anidb.app"
   }
 }
