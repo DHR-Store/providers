@@ -418,5 +418,9 @@
   "kaa": {
     "name": "kaa",
     "url": "https://kaa.lt"
+  },
+  "pvrplay": {
+    "name": "pvrplay",
+    "url": "https://pvrplay.online"
   }
 }
