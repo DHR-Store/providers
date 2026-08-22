@@ -426,5 +426,9 @@
   "anidb": {
     "name": "anidb",
     "url": "https://anidb.app"
+  },
+  "dramakey": {
+    "name": "dramakey",
+    "url": "https://onlykdrama.shop"
   }
 }
