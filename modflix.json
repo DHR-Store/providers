@@ -430,5 +430,9 @@
   "DramaKey": {
     "name": "dramakey",
     "url": "https://onlykdrama.shop"
+  },
+  "Dramafull": {
+    "name": "Dramafull",
+    "url": "https://dramafull.rest"
   }
 }
