@@ -434,5 +434,9 @@
   "Dramafull": {
     "name": "Dramafull",
     "url": "https://dramafull.rest"
+  },
+  "mirurotv": {
+    "name": "mirurotv",
+    "url": "https://www.miruro.to"
   }
 }
