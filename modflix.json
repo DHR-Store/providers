@@ -405,8 +405,13 @@
   },
   "netninja": {
     "name": "netninja",
-    "url": "https://netnaija.film"
+    "url": "https://h5-api.aoneroom.com/wefeed-h5api-bff"
   },
+  "netninjaplay": {
+    "name": "netninjaplay",
+    "url": "https://netnaija.film/wefeed-h5api-bff/subject/play"
+  },
+  
   "hdghar": {
     "name": "hdghar",
     "url": "https://hdghartv.cc"
