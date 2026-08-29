@@ -442,5 +442,9 @@
   "mirurotv": {
     "name": "mirurotv",
     "url": "https://www.miruro.to"
+  },
+  "reanime": {
+    "name": "reanime",
+    "url": "https://reanime.to"
   }
 }
