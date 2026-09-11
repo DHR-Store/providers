@@ -450,5 +450,9 @@
   "india4movies": {
     "name": "india4movies",
     "url": "https://go3.india4movies.net"
+  },
+  "mkvbase": {
+    "name": "mkvbase",
+    "url": "https://mkvcinemass.rest"
   }
 }
