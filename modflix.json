@@ -462,5 +462,9 @@
   "movienestbd": {
     "name": "movienestbd",
     "url": "https://movienestbd.best"
+  },
+  "liveTgTv": {
+    "name": "LiveTG TV",
+    "url": "https://livetgtv.lovable.app"
   }
 }
