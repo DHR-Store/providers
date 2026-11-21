@@ -466,5 +466,9 @@
   "liveTgTv": {
     "name": "LiveTG TV",
     "url": "https://livetgtv.lovable.app"
+  },
+  "dramabox": {
+    "name": "dramabox",
+    "url": "https://www.dramaboxdb.com"
   }
 }
