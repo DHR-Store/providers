@@ -470,5 +470,9 @@
   "dramabox": {
     "name": "dramabox",
     "url": "https://www.dramaboxdb.com"
+  },
+  "nepu": {
+    "name": "nepu",
+    "url": "https://nepu.io"
   }
 }
