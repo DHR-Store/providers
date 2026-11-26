@@ -474,5 +474,9 @@
   "nepu": {
     "name": "nepu",
     "url": "https://nepu.io"
+  },
+  "allmovie": {
+    "name": "allmovie",
+    "url": "https://allmovies.life"
   }
 }
